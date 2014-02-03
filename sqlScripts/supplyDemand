@@ -2,31 +2,25 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `sypplyDemand` ;
-CREATE SCHEMA IF NOT EXISTS `sypplyDemand` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `sypplyDemand` ;
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`Domain`
+-- Table `supplyDemand`.`Domain`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`Domain` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`Domain` (
-  `idDomain` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`Domain` (
+  `idDomain` INT NOT NULL AUTO_INCREMENT ,
   `nomDomain` VARCHAR(45) NOT NULL ,
   `descriptionDomain` TEXT NULL ,
   PRIMARY KEY (`idDomain`) ,
   UNIQUE INDEX `nomDomain_UNIQUE` (`nomDomain` ASC) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+PACK_KEYS = DEFAULT;
 
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`Type`
+-- Table `supplyDemand`.`Type`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`Type` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`Type` (
-  `idType` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`Type` (
+  `idType` INT NOT NULL AUTO_INCREMENT ,
   `nomType` VARCHAR(45) NOT NULL ,
   `descriptionType` TEXT NULL ,
   `forDomain` INT NOT NULL ,
@@ -35,103 +29,109 @@ CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`Type` (
   INDEX `fk_Type_1_idx` (`forDomain` ASC) ,
   CONSTRAINT `fk_Type_1`
     FOREIGN KEY (`forDomain` )
-    REFERENCES `sypplyDemand`.`Domain` (`idDomain` )
+    REFERENCES `supplyDemand`.`Domain` (`idDomain` )
     ON DELETE RESTRICT
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`ValeurType`
+-- Table `supplyDemand`.`Offrant`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`ValeurType` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`ValeurType` (
-  `idValeurType` INT NOT NULL ,
-  `type` INT NOT NULL ,
-  `valeur` INT NOT NULL ,
-  PRIMARY KEY (`idValeurType`) ,
-  INDEX `fk_ValeurType_1_idx` (`type` ASC) ,
-  CONSTRAINT `fk_ValeurType_1`
-    FOREIGN KEY (`type` )
-    REFERENCES `sypplyDemand`.`Type` (`idType` )
-    ON DELETE RESTRICT
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sypplyDemand`.`Offrant`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`Offrant` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`Offrant` (
-  `idOffrant` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`Offrant` (
+  `idOffrant` INT NOT NULL AUTO_INCREMENT ,
   `informations` TEXT NULL ,
   PRIMARY KEY (`idOffrant`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`Demandeur`
+-- Table `supplyDemand`.`CritereOffrant`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`Demandeur` ;
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`CritereOffrant` (
+  `idOffrant` INT NOT NULL ,
+  `idtType` INT NOT NULL ,
+  `valeur` INT NOT NULL ,
+  INDEX `fk_ValeurType_2_idx` (`idOffrant` ASC) ,
+  INDEX `fk_ValeurType_1_idx` (`idtType` ASC) ,
+  PRIMARY KEY (`idOffrant`, `idtType`) ,
+  CONSTRAINT `fk_ValeurType_1`
+    FOREIGN KEY (`idtType` )
+    REFERENCES `supplyDemand`.`Type` (`idType` )
+    ON DELETE RESTRICT
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ValeurType_2`
+    FOREIGN KEY (`idOffrant` )
+    REFERENCES `supplyDemand`.`Offrant` (`idOffrant` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`Demandeur` (
-  `idDemandeur` INT NOT NULL ,
+
+-- -----------------------------------------------------
+-- Table `supplyDemand`.`Demandeur`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`Demandeur` (
+  `idDemandeur` INT NOT NULL AUTO_INCREMENT ,
   `informations` VARCHAR(45) NULL ,
   PRIMARY KEY (`idDemandeur`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`CriteresOffrant`
+-- Table `supplyDemand`.`CriteresOffrant`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`CriteresOffrant` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`CriteresOffrant` (
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`CriteresOffrant` (
   `idOffrant` INT NOT NULL ,
   `idValeurType` INT NOT NULL ,
   PRIMARY KEY (`idOffrant`, `idValeurType`) ,
   INDEX `fk_CriteresOffrant_1_idx` (`idOffrant` ASC) ,
-  INDEX `fk_CriteresOffrant_2_idx` (`idValeurType` ASC) ,
   CONSTRAINT `fk_CriteresOffrant_1`
     FOREIGN KEY (`idOffrant` )
-    REFERENCES `sypplyDemand`.`Offrant` (`idOffrant` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_CriteresOffrant_2`
-    FOREIGN KEY (`idValeurType` )
-    REFERENCES `sypplyDemand`.`ValeurType` (`idValeurType` )
+    REFERENCES `supplyDemand`.`Offrant` (`idOffrant` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sypplyDemand`.`CriteresDemandeur`
+-- Table `supplyDemand`.`CriteresDemandeur`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sypplyDemand`.`CriteresDemandeur` ;
-
-CREATE  TABLE IF NOT EXISTS `sypplyDemand`.`CriteresDemandeur` (
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`CriteresDemandeur` (
   `idDemandeur` INT NOT NULL ,
   `idValeurType` INT NOT NULL ,
   PRIMARY KEY (`idDemandeur`, `idValeurType`) ,
-  INDEX `fk_CriteresOffrant_2_idx` (`idValeurType` ASC) ,
   INDEX `fk_CriteresOffrant_10_idx` (`idDemandeur` ASC) ,
   CONSTRAINT `fk_CriteresOffrant_10`
     FOREIGN KEY (`idDemandeur` )
-    REFERENCES `sypplyDemand`.`Demandeur` (`idDemandeur` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_CriteresOffrant_20`
-    FOREIGN KEY (`idValeurType` )
-    REFERENCES `sypplyDemand`.`ValeurType` (`idValeurType` )
+    REFERENCES `supplyDemand`.`Demandeur` (`idDemandeur` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `sypplyDemand` ;
+
+-- -----------------------------------------------------
+-- Table `supplyDemand`.`CritereDemandeur`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `supplyDemand`.`CritereDemandeur` (
+  `idDemandeur` INT NOT NULL ,
+  `idtType` INT NOT NULL ,
+  `valeur` INT NOT NULL ,
+  PRIMARY KEY (`idDemandeur`, `idtType`) ,
+  INDEX `fk_ValeurType_1_idx` (`idtType` ASC) ,
+  INDEX `fk_ValeurType_20_idx` (`idDemandeur` ASC) ,
+  CONSTRAINT `fk_ValeurType_10`
+    FOREIGN KEY (`idtType` )
+    REFERENCES `supplyDemand`.`Type` (`idType` )
+    ON DELETE RESTRICT
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ValeurType_20`
+    FOREIGN KEY (`idDemandeur` )
+    REFERENCES `supplyDemand`.`Demandeur` (`idDemandeur` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
