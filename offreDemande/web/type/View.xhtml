@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TypeViewDlg" widgetVar="TypeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTypeTitle}">
+            <h:form id="TypeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{typeController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTypeLabel_idType}"/>
+                        <h:outputText value="#{typeController.selected.idType}" title="#{bundle.ViewTypeTitle_idType}"/>
+                        <h:outputText value="#{bundle.ViewTypeLabel_nomType}"/>
+                        <h:outputText value="#{typeController.selected.nomType}" title="#{bundle.ViewTypeTitle_nomType}"/>
+                        <h:outputText value="#{bundle.ViewTypeLabel_descriptionType}"/>
+                        <h:outputText value="#{typeController.selected.descriptionType}" title="#{bundle.ViewTypeTitle_descriptionType}"/>
+                        <h:outputText value="#{bundle.ViewTypeLabel_forDomain}"/>
+                        <h:outputText value="#{typeController.selected.forDomain}" title="#{bundle.ViewTypeTitle_forDomain}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TypeViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

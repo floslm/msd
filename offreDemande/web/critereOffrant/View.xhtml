@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CritereOffrantViewDlg" widgetVar="CritereOffrantViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewCritereOffrantTitle}">
+            <h:form id="CritereOffrantViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{critereOffrantController.selected != null}">
+                        <h:outputText value="#{bundle.ViewCritereOffrantLabel_valeur}"/>
+                        <h:outputText value="#{critereOffrantController.selected.valeur}" title="#{bundle.ViewCritereOffrantTitle_valeur}"/>
+                        <h:outputText value="#{bundle.ViewCritereOffrantLabel_offrant}"/>
+                        <h:outputText value="#{critereOffrantController.selected.offrant}" title="#{bundle.ViewCritereOffrantTitle_offrant}"/>
+                        <h:outputText value="#{bundle.ViewCritereOffrantLabel_type}"/>
+                        <h:outputText value="#{critereOffrantController.selected.type}" title="#{bundle.ViewCritereOffrantTitle_type}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="CritereOffrantViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

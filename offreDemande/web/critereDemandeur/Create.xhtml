@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CritereDemandeurCreateDlg" widgetVar="CritereDemandeurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCritereDemandeurTitle}">
+            <h:form id="CritereDemandeurCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{critereDemandeurController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCritereDemandeurLabel_valeur}" for="valeur" />
+                        <p:inputText id="valeur" value="#{critereDemandeurController.selected.valeur}" title="#{bundle.CreateCritereDemandeurTitle_valeur}" required="true" requiredMessage="#{bundle.CreateCritereDemandeurRequiredMessage_valeur}"/>
+                        <p:outputLabel value="#{bundle.CreateCritereDemandeurLabel_demandeur}" for="demandeur" />
+                        <p:selectOneMenu id="demandeur" value="#{critereDemandeurController.selected.demandeur}" required="true" requiredMessage="#{bundle.EditCritereDemandeurRequiredMessage_demandeur}">
+                            <f:selectItems value="#{demandeurController.itemsAvailableSelectOne}"
+                                           var="demandeurItem"
+                                           itemValue="#{demandeurItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCritereDemandeurLabel_type}" for="type" />
+                        <p:selectOneMenu id="type" value="#{critereDemandeurController.selected.type}" required="true" requiredMessage="#{bundle.EditCritereDemandeurRequiredMessage_type}">
+                            <f:selectItems value="#{typeController.itemsAvailableSelectOne}"
+                                           var="typeItem"
+                                           itemValue="#{typeItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{critereDemandeurController.create}" value="#{bundle.Save}" update="display,:CritereDemandeurListForm:datalist,:growl" oncomplete="handleSubmit(args,'CritereDemandeurCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CritereDemandeurCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
