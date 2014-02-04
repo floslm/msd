@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +45,7 @@ public class Demandeur implements Serializable {
     @Size(max = 45)
     @Column(name = "informations", length = 45)
     private String informations;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "demandeur")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "demandeur", fetch = FetchType.EAGER)
     private Collection<CritereDemandeur> critereDemandeurCollection;
 
     public Demandeur() {
