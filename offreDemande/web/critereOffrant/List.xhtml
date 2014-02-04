@@ -43,7 +43,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCritereOffrantTitle_type}"/>
                             </f:facet>
-                            <h:outputText value="#{item.type.nomType}"/>
+                            #{item.type.forDomain.nomDomain}/<h:outputText value="#{item.type.nomType}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{critereOffrantController.prepareCreate}" update=":CritereOffrantCreateForm" oncomplete="PF('CritereOffrantCreateDialog').show()"/>

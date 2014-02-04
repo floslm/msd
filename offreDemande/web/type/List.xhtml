@@ -37,7 +37,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTypeTitle_nomType}"/>
                             </f:facet>
-                            <h:outputText value="#{item.nomType}"/>
+                            #{item.forDomain.nomDomain}/<h:outputText value="#{item.nomType}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">

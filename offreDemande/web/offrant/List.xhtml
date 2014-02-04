@@ -39,6 +39,19 @@
                             </f:facet>
                             <h:outputText value="#{item.informations}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="critères de l'offre"/>
+                            </f:facet>
+                            <p:dataTable value="#{item.critereOffrantCollection}" var="co">
+                                <p:column headerText="type">
+                                    #{co.type.forDomain.nomDomain}/<h:outputText value="#{co.type.nomType}"/>
+                                </p:column>
+                                <p:column headerText="valeur">
+                                    #{co.valeur}
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{offrantController.prepareCreate}" update=":OffrantCreateForm" oncomplete="PF('OffrantCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":OffrantViewForm" oncomplete="PF('OffrantViewDialog').show()" disabled="#{empty offrantController.selected}"/>

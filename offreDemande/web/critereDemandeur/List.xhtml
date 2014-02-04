@@ -43,7 +43,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCritereDemandeurTitle_type}"/>
                             </f:facet>
-                            <h:outputText value="#{item.type.nomType}"/>
+                            #{item.type.forDomain.nomDomain}/<h:outputText value="#{item.type.nomType}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{critereDemandeurController.prepareCreate}" update=":CritereDemandeurCreateForm" oncomplete="PF('CritereDemandeurCreateDialog').show()"/>
