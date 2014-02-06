@@ -18,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import net.cofares.CritereDemandeur;
 
 @Named("critereOffrantController")
 @SessionScoped
@@ -84,6 +85,10 @@ public class CritereOffrantController implements Serializable {
         return items;
     }
 
+    public List<CritereOffrant> itemsByIdOffrant(int idoff) {
+        List<CritereOffrant> ritems = getFacade().findByIdOffrant(idoff);      
+        return ritems;
+    }
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();

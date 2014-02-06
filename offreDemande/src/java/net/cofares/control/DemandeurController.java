@@ -18,6 +18,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import net.cofares.Offrant;
+import net.cofares.util.Distances;
 
 @Named("demandeurController")
 @SessionScoped
@@ -121,6 +123,10 @@ public class DemandeurController implements Serializable {
         return getFacade().findAll();
     }
 
+    public int distance(Demandeur d, Offrant o) {
+        return Distances.getDistance(d.getCritereDemandeurCollection(), o.getCritereOffrantCollection());
+    }
+
     @FacesConverter(forClass = Demandeur.class)
     public static class DemandeurControllerConverter implements Converter {
 
@@ -153,7 +159,7 @@ public class DemandeurController implements Serializable {
             }
             if (object instanceof Demandeur) {
                 Demandeur o = (Demandeur) object;
-                return getStringKey(o.getIdDemandeur());
+                return getStringKey(o.getIdDemandeur()) + o.getInformations();
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Demandeur.class.getName()});
                 return null;

@@ -43,7 +43,7 @@
                             <f:facet name="header">
                                 <h:outputText value="critères de l'offre"/>
                             </f:facet>
-                            <p:dataTable value="#{item.critereOffrantCollection}" var="co">
+                            <p:dataTable value="#{critereOffrantController.itemsByIdOffrant(item.idOffrant)}" var="co">
                                 <p:column headerText="type">
                                     #{co.type.forDomain.nomDomain}/<h:outputText value="#{co.type.nomType}"/>
                                 </p:column>

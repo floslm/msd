@@ -102,7 +102,7 @@ public class Demandeur implements Serializable {
 
     @Override
     public String toString() {
-        return "[Demandeur=" + informations + " ]";
+        return "[Demandeur:" + informations + "]";
     }
     
 }

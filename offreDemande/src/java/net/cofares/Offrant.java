@@ -102,7 +102,7 @@ public class Offrant implements Serializable {
 
     @Override
     public String toString() {
-        return "net.cofares.Offrant[ Offrant=" + informations + " ]";
+        return "[Offrant:" + informations + "]";
     }
     
 }

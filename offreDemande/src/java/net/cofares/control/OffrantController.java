@@ -1,10 +1,5 @@
 package net.cofares.control;
 
-import net.cofares.Offrant;
-import net.cofares.control.util.JsfUtil;
-import net.cofares.control.util.JsfUtil.PersistAction;
-import net.cofares.sb.OffrantFacade;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,12 +7,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Named;
+import net.cofares.CritereDemandeur;
+import net.cofares.Demandeur;
+import net.cofares.Offrant;
+import net.cofares.control.util.JsfUtil;
+import net.cofares.control.util.JsfUtil.PersistAction;
+import net.cofares.sb.OffrantFacade;
+import net.cofares.util.Distances;
 
 @Named("offrantController")
 @SessionScoped
@@ -120,6 +122,11 @@ public class OffrantController implements Serializable {
     public List<Offrant> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+   
+     public int distance(Offrant o, Demandeur d) {
+       return Distances.getDistance(d.getCritereDemandeurCollection(), o.getCritereOffrantCollection());
+    }
 
     @FacesConverter(forClass = Offrant.class)
     public static class OffrantControllerConverter implements Converter {
@@ -153,7 +160,7 @@ public class OffrantController implements Serializable {
             }
             if (object instanceof Offrant) {
                 Offrant o = (Offrant) object;
-                return getStringKey(o.getIdOffrant());
+                return getStringKey(o.getIdOffrant())+o.getInformations();
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Offrant.class.getName()});
                 return null;

@@ -83,6 +83,11 @@ public class CritereDemandeurController implements Serializable {
         }
         return items;
     }
+    
+    public List<CritereDemandeur> itemsByIdDemandeur(int iddem) {
+        List<CritereDemandeur> ritems = getFacade().findByIdDemandeur(iddem);      
+        return ritems;
+    }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
