@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProfilEditDlg" widgetVar="ProfilEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProfilTitle}">
+            <h:form id="ProfilEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{profilController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditProfilLabel_idProfil}" for="idProfil" />
+                        <p:inputText id="idProfil" value="#{profilController.selected.idProfil}" title="#{bundle.EditProfilTitle_idProfil}" required="true" requiredMessage="#{bundle.EditProfilRequiredMessage_idProfil}"/>
+                        <p:outputLabel value="#{bundle.EditProfilLabel_descriptionprofil}" for="descriptionprofil" />
+                        <p:inputText id="descriptionprofil" value="#{profilController.selected.descriptionprofil}" title="#{bundle.EditProfilTitle_descriptionprofil}" />
+                        <p:outputLabel value="#{bundle.EditProfilLabel_typeProfil}" for="typeProfil" />
+                        <p:inputText id="typeProfil" value="#{profilController.selected.typeProfil}" title="#{bundle.EditProfilTitle_typeProfil}" required="true" requiredMessage="#{bundle.EditProfilRequiredMessage_typeProfil}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{profilController.update}" value="#{bundle.Save}" update="display,:ProfilListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProfilEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProfilEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
