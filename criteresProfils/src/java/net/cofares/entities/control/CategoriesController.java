@@ -18,6 +18,8 @@ import net.cofares.entities.Categories;
 import net.cofares.entities.control.util.JsfUtil;
 import net.cofares.entities.control.util.JsfUtil.PersistAction;
 import net.cofares.entities.sb.CategoriesFacade;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 @Named("categoriesController")
 @SessionScoped
@@ -26,6 +28,7 @@ public class CategoriesController implements Serializable {
     @EJB
     private net.cofares.entities.sb.CategoriesFacade ejbFacade;
     private List<Categories> items = null;
+    TreeNode treeItems = null;
     private Categories selected;
 
     public CategoriesController() {
@@ -87,9 +90,27 @@ public class CategoriesController implements Serializable {
         }
         return items;
     }
-    public List<Categories> getHeadItems() {
+    public List<Categories> getHeadItems() {       
         return getFacade().findHeadCategories();   
     }
+    
+    private void _subItems(List<Categories> subCategories, TreeNode parent){
+        
+        for (Categories c: subCategories) {
+            TreeNode current = new DefaultTreeNode(c, parent);
+            //_subItems(c.getCategoriesList(),current);
+            _subItems(ejbFacade.findSubCategories(c),current);
+        }
+   
+    }
+    
+    public TreeNode getTreeItems() {       
+        List<Categories> lcRacine = getFacade().findHeadCategories(); 
+        treeItems = new DefaultTreeNode("root", null);  
+        _subItems(lcRacine,treeItems);
+        return treeItems;
+    }
+    
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();

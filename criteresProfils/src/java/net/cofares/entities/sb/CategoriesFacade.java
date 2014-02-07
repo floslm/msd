@@ -38,7 +38,7 @@ public class CategoriesFacade extends AbstractFacade<Categories> {
         return results;
     }
     
-    public List<Categories> findSubCategories(Integer id) {
+    public List<Categories> findSubCategories(Categories id) {
         TypedQuery<Categories> query
                 = em.createNamedQuery("Categories.findSubCategories", Categories.class);
         query.setParameter("idCategories", id);
