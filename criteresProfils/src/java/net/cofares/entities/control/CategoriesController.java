@@ -15,6 +15,7 @@ import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.inject.Named;
 import net.cofares.entities.Categories;
+import net.cofares.entities.Profil;
 import net.cofares.entities.control.util.JsfUtil;
 import net.cofares.entities.control.util.JsfUtil.PersistAction;
 import net.cofares.entities.sb.CategoriesFacade;
@@ -30,8 +31,45 @@ public class CategoriesController implements Serializable {
     private List<Categories> items = null;
     TreeNode treeItems = null;
     private Categories selected;
+    private Integer idProfil;
+    private TreeNode treeSelected;
 
     public CategoriesController() {
+    }
+
+    /**
+     * @return the idProfil
+     */
+    public Integer getIdProfil() {
+        return idProfil;
+    }
+
+    /**
+     * @param idProfil the idProfil to set
+     */
+    public void setIdProfil(Integer idProfil) {
+        this.idProfil = idProfil;
+        if (idProfil == null) {
+            profilController.setSelected(null);
+        } else {
+            profilController.setSelected(profilController.getProfil(idProfil));
+        }
+
+    }
+
+    /**
+     * @return the treeSelected
+     */
+    public TreeNode getTreeSelected() {
+        return treeSelected;
+    }
+
+    /**
+     * @param treeSelected the treeSelected to set
+     */
+    public void setTreeSelected(TreeNode treeSelected) {
+        this.treeSelected = treeSelected;
+        this.selected = (Categories) treeSelected.getData();
     }
 
     public Categories getSelected() {
@@ -53,15 +91,15 @@ public class CategoriesController implements Serializable {
     }
     @Inject
     ProfilController profilController;
-    
+
     public Categories prepareCreate() {
-        if (selected==null) selected = new Categories();
-        else {
-            selected = new Categories(selected);
-        }
-        selected.setPourProfil(profilController.getSelected());
-        
+        Categories prep = new Categories();
+
+        //prep.setPourProfil(profilController.getProfil(idProfil));
+        //prep.setIdCategories(selected.getIdCategories() * 10);
+        //prep.setCategorieParente(selected);
         initializeEmbeddableKey();
+        selected = prep;
         return selected;
     }
 
@@ -90,27 +128,36 @@ public class CategoriesController implements Serializable {
         }
         return items;
     }
-    public List<Categories> getHeadItems() {       
-        return getFacade().findHeadCategories();   
+
+    public List<Categories> getHeadItems() {
+        return getFacade().findHeadCategories();
     }
-    
-    private void _subItems(List<Categories> subCategories, TreeNode parent){
-        
-        for (Categories c: subCategories) {
-            TreeNode current = new DefaultTreeNode(c, parent);
-            //_subItems(c.getCategoriesList(),current);
-            _subItems(ejbFacade.findSubCategories(c),current);
+
+    public List<Categories> headCategories(Profil p) {
+        if (p == null) {
+            return getFacade().findHeadCategories();
+        } else {
+            return getFacade().findProfilHeadCategories(p);
         }
-   
     }
-    
-    public TreeNode getTreeItems() {       
-        List<Categories> lcRacine = getFacade().findHeadCategories(); 
-        treeItems = new DefaultTreeNode("root", null);  
-        _subItems(lcRacine,treeItems);
+
+    public void _subItems(List<Categories> subCategories, TreeNode parent) {
+
+        for (Categories c : subCategories) {
+            TreeNode current = new DefaultTreeNode("Categorie", c, parent);
+            //_subItems(c.getCategoriesList(),current);
+            _subItems(ejbFacade.findSubCategories(c), current);
+        }
+
+    }
+
+    public TreeNode getTreeItems() {
+        List<Categories> lcRacine = headCategories(profilController.getSelected());
+        treeItems = new DefaultTreeNode("root", null);
+        _subItems(lcRacine, treeItems);
         return treeItems;
     }
-    
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -190,6 +237,7 @@ public class CategoriesController implements Serializable {
             }
         }
 
-    }
+        
 
+    }
 }

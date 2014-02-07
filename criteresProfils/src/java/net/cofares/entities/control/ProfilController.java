@@ -1,10 +1,5 @@
 package net.cofares.entities.control;
 
-import net.cofares.entities.Profil;
-import net.cofares.entities.control.util.JsfUtil;
-import net.cofares.entities.control.util.JsfUtil.PersistAction;
-import net.cofares.entities.sb.ProfilFacade;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,12 +7,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import javax.inject.Named;
+import net.cofares.entities.Categories;
+import net.cofares.entities.Profil;
+import net.cofares.entities.control.util.JsfUtil;
+import net.cofares.entities.control.util.JsfUtil.PersistAction;
+import net.cofares.entities.sb.ProfilFacade;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 @Named("profilController")
 @SessionScoped
@@ -27,8 +30,35 @@ public class ProfilController implements Serializable {
     private net.cofares.entities.sb.ProfilFacade ejbFacade;
     private List<Profil> items = null;
     private Profil selected;
+    TreeNode treeItems = null;
+    private TreeNode treeSelected;
+
+    @Inject
+    CategoriesController categoriesController;
 
     public ProfilController() {
+    }
+
+    /**
+     * @return the treeSelected
+     */
+    public TreeNode getTreeSelected() {
+        return treeSelected;
+    }
+
+    /**
+     * @param treeSelected the treeSelected to set
+     */
+    public void setTreeSelected(TreeNode treeSelected) {
+        this.treeSelected = treeSelected;
+        switch (treeSelected.getType()) {
+            case "Profil":
+                selected = (Profil) treeSelected.getData();
+                break;
+            case "Categorie":
+                categoriesController.setSelected((Categories) treeSelected.getData());
+                break;
+        }
     }
 
     public Profil getSelected() {
@@ -79,6 +109,18 @@ public class ProfilController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
+    }
+
+    public TreeNode getTreeItems() {
+        List<Profil> lcRacine = getItems();
+        treeItems = new DefaultTreeNode("root", null);
+        for (Profil p : lcRacine) {
+            TreeNode current = new DefaultTreeNode("Profil", p, treeItems);
+            List<Categories> lcp = categoriesController.headCategories(p);
+            categoriesController._subItems(lcp, current);
+        }
+        //_subItems(lcRacine,treeItems);
+        return treeItems;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -161,5 +203,4 @@ public class ProfilController implements Serializable {
         }
 
     }
-
 }

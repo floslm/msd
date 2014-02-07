@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c"),
     @NamedQuery(name = "Categories.findHeadCategories", query = "SELECT c FROM Categories c WHERE c.categorieParente is NULL"),
+    @NamedQuery(name = "Categories.findProfilHeadCategories", query = "SELECT c FROM Categories c WHERE c.categorieParente is NULL and c.pourProfil = :profil"),   
     @NamedQuery(name = "Categories.findSubCategories", query = "SELECT c FROM Categories c WHERE c.categorieParente = :idCategories"),
     @NamedQuery(name = "Categories.findByIdCategories", query = "SELECT c FROM Categories c WHERE c.idCategories = :idCategories"),
     @NamedQuery(name = "Categories.findByNomCategorie", query = "SELECT c FROM Categories c WHERE c.nomCategorie = :nomCategorie"),
@@ -125,6 +126,7 @@ public class Categories implements Serializable {
     public void setPourProfil(Profil pourProfil) {
         this.pourProfil = pourProfil;
     }
+    
 
     @XmlTransient
     public List<Categories> getCategoriesList() {
@@ -162,7 +164,7 @@ public class Categories implements Serializable {
 
     @Override
     public String toString() {
-        return "[Categorie=" + "(" + valeur + ")" + idCategories + ":" + nomCategorie + ":" + description + "]";
+        return "[Categorie" + "(" + valeur + ")" + nomCategorie + ":" + description + "]";
     }
 
 }

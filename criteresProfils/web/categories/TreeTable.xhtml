@@ -16,11 +16,18 @@
             <h:form id="CategoriesListForm">
                 <p:panel header="#{bundle.ListCategoriesTitle}">
                     <p:treeTable id="datalist" value="#{categoriesController.treeItems}" var="item"
-                                 selectionMode="single" selection="#{categoriesController.selected}"
-                                 
+                                 selectionMode="single" selection="#{categoriesController.treeSelected}"                                 
                                  >
-
-                     
+                      <p:ajax event="select"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="unselect" update="createButton viewButton editButton deleteButton"/>
+                        <f:facet name="header">
+                            <h:selectOneMenu  value="#{profilController.selected}" >
+                                <f:selectItem itemLabel="--" itemValue="#{null}"/>
+                            <f:selectItems  value="#{profilController.itemsAvailableSelectOne}"
+                                            var="x" itemLabel="#{x}" itemValue="#{x}" />
+                             <f:ajax render="datalist" />
+                        </h:selectOneMenu>
+                        </f:facet>
                         <p:column style="width:10%">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_idCategories}"/>

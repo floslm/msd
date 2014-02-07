@@ -114,7 +114,7 @@ public class Profil implements Serializable {
 
     @Override
     public String toString() {
-        return "[Profil=" + idProfil + ":" + descriptionprofil + "]";
+        return "[Profil:" + descriptionprofil + "]";
     }
     
 }

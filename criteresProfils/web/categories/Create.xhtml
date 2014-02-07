@@ -25,6 +25,7 @@
                             <f:selectItem itemLabel="--" />
                             <f:selectItems value="#{profilController.itemsAvailableSelectOne}"
                                            var="pourProfilItem"
+                                           itemLabel="#{pourProfilItem}"
                                            itemValue="#{pourProfilItem}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.CreateCategoriesLabel_categorieParente}" for="categorieParente" />
