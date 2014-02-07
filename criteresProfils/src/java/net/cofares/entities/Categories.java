@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.cofares.entities;
 
 import java.io.Serializable;
@@ -35,10 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c"),
+    @NamedQuery(name = "Categories.findHeadCategories", query = "SELECT c FROM Categories c WHERE c.categorieParente is NULL"),
+    @NamedQuery(name = "Categories.findSubCategories", query = "SELECT c FROM Categories c WHERE c.categorieParente = :idCategories"),
     @NamedQuery(name = "Categories.findByIdCategories", query = "SELECT c FROM Categories c WHERE c.idCategories = :idCategories"),
     @NamedQuery(name = "Categories.findByNomCategorie", query = "SELECT c FROM Categories c WHERE c.nomCategorie = :nomCategorie"),
     @NamedQuery(name = "Categories.findByValeur", query = "SELECT c FROM Categories c WHERE c.valeur = :valeur")})
 public class Categories implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -73,7 +75,11 @@ public class Categories implements Serializable {
     public Categories(Integer idCategories) {
         this.idCategories = idCategories;
     }
-
+    public Categories(Categories c) {
+        this();
+        this.idCategories = c.idCategories*100;
+        this.categorieParente = c;
+    }
     public Categories(Integer idCategories, String nomCategorie, int valeur) {
         this.idCategories = idCategories;
         this.nomCategorie = nomCategorie;
@@ -156,7 +162,7 @@ public class Categories implements Serializable {
 
     @Override
     public String toString() {
-        return "[Categorie=" + "("+valeur+")"+ idCategories + ":"+ nomCategorie + ":"+ description + "]";
+        return "[Categorie=" + "(" + valeur + ")" + idCategories + ":" + nomCategorie + ":" + description + "]";
     }
-    
+
 }
