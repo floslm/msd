@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateCategoriesTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_idCategories}" for="idCategories" />
+                    <h:inputText id="idCategories" value="#{categoriesController.selected.idCategories}" title="#{bundle.CreateCategoriesTitle_idCategories}" required="true" requiredMessage="#{bundle.CreateCategoriesRequiredMessage_idCategories}"/>
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_nomCategorie}" for="nomCategorie" />
+                    <h:inputText id="nomCategorie" value="#{categoriesController.selected.nomCategorie}" title="#{bundle.CreateCategoriesTitle_nomCategorie}" required="true" requiredMessage="#{bundle.CreateCategoriesRequiredMessage_nomCategorie}"/>
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_valeur}" for="valeur" />
+                    <h:inputText id="valeur" value="#{categoriesController.selected.valeur}" title="#{bundle.CreateCategoriesTitle_valeur}" required="true" requiredMessage="#{bundle.CreateCategoriesRequiredMessage_valeur}"/>
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_description}" for="description" />
+                    <h:inputTextarea rows="4" cols="30" id="description" value="#{categoriesController.selected.description}" title="#{bundle.CreateCategoriesTitle_description}" />
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_pourProfil}" for="pourProfil" />
+                    <h:selectOneMenu id="pourProfil" value="#{categoriesController.selected.pourProfil}" title="#{bundle.CreateCategoriesTitle_pourProfil}" >
+                        <f:selectItems value="#{profilController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_categorieParente}" for="categorieParente" />
+                    <h:selectOneMenu id="categorieParente" value="#{categoriesController.selected.categorieParente}" title="#{bundle.CreateCategoriesTitle_categorieParente}" >
+                        <f:selectItems value="#{categoriesController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateCategoriesLabel_semantique}" for="semantique" />
+                    <h:selectOneMenu id="semantique" value="#{categoriesController.selected.semantique}" title="#{bundle.CreateCategoriesTitle_semantique}" >
+                        <f:selectItems value="#{semantiqueController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{categoriesController.create}" value="#{bundle.CreateCategoriesSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{categoriesController.prepareList}" value="#{bundle.CreateCategoriesShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateCategoriesIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
