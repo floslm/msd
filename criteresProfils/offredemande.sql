@@ -52,7 +52,7 @@ CREATE TABLE `Categories` (
 
 LOCK TABLES `Categories` WRITE;
 /*!40000 ALTER TABLE `Categories` DISABLE KEYS */;
-INSERT INTO `Categories` VALUES (1,'Pays','Categorie de lieu',10,NULL,1),(2,'Metiers','Categorie des metiers',10,NULL,1);
+INSERT INTO `Categories` VALUES (1,'Pays','Categorie de lieu',10,NULL,1),(2,'Metiers','Categorie des metiers',10,NULL,1),(11,'Liban','Liban',10,1,1),(110,'Beyrouth','',5,11,1),(111,'MontLiban','',1,11,1),(200,'Informatique','',10,2,NULL),(20000,'Myql','',10,200,NULL),(20001,'Java','',10,200,NULL);
 /*!40000 ALTER TABLE `Categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ CREATE TABLE `Profil` (
 
 LOCK TABLES `Profil` WRITE;
 /*!40000 ALTER TABLE `Profil` DISABLE KEYS */;
-INSERT INTO `Profil` VALUES (1,'Pascal Fares','D'),(2,'Mohamad Safa','D'),(3,'Ingénieur Civil','D'),(4,'Secrétaire','D'),(5,'ISSAE','O'),(6,'Banque Liban','O'),(7,'SuperBatiment','O');
+INSERT INTO `Profil` VALUES (0,'META profil','X'),(1,'Pascal Fares','D'),(2,'Mohamad Safa','D'),(3,'Ingénieur Civil','D'),(4,'Secrétaire','D'),(5,'ISSAE','O'),(6,'Banque Liban','O'),(7,'SuperBatiment','O');
 /*!40000 ALTER TABLE `Profil` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-07 13:21:58
+-- Dump completed on 2014-02-08 11:29:51
