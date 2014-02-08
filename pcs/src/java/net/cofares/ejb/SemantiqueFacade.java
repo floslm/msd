@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity.sb;
+package net.cofares.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import net.cofares.entity.Profil;
+import net.cofares.Semantique;
 
 /**
  *
  * @author pfares
  */
 @Stateless
-public class ProfilFacade extends AbstractFacade<Profil> {
+public class SemantiqueFacade extends AbstractFacade<Semantique> {
     @PersistenceContext(unitName = "pcsPU")
     private EntityManager em;
 
@@ -25,8 +25,8 @@ public class ProfilFacade extends AbstractFacade<Profil> {
         return em;
     }
 
-    public ProfilFacade() {
-        super(Profil.class);
+    public SemantiqueFacade() {
+        super(Semantique.class);
     }
     
 }

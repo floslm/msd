@@ -3,48 +3,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ViewCategoriesTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_idCategories}"/>
-                    <h:outputText value="#{categoriesController.selected.idCategories}" title="#{bundle.ViewCategoriesTitle_idCategories}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_nomCategorie}"/>
-                    <h:outputText value="#{categoriesController.selected.nomCategorie}" title="#{bundle.ViewCategoriesTitle_nomCategorie}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_valeur}"/>
-                    <h:outputText value="#{categoriesController.selected.valeur}" title="#{bundle.ViewCategoriesTitle_valeur}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_description}"/>
-                    <h:outputText value="#{categoriesController.selected.description}" title="#{bundle.ViewCategoriesTitle_description}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_pourProfil}"/>
-                    <h:outputText value="#{categoriesController.selected.pourProfil}" title="#{bundle.ViewCategoriesTitle_pourProfil}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_categorieParente}"/>
-                    <h:outputText value="#{categoriesController.selected.categorieParente}" title="#{bundle.ViewCategoriesTitle_categorieParente}"/>
-                    <h:outputText value="#{bundle.ViewCategoriesLabel_semantique}"/>
-                    <h:outputText value="#{categoriesController.selected.semantique}" title="#{bundle.ViewCategoriesTitle_semantique}"/>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{categoriesController.destroyAndView}" value="#{bundle.ViewCategoriesDestroyLink}"/>
-                <br />
-                <br />
-                <h:link outcome="Edit" value="#{bundle.ViewCategoriesEditLink}"/>
-                <br />
-                <h:commandLink action="#{categoriesController.prepareCreate}" value="#{bundle.ViewCategoriesCreateLink}" />
-                <br />
-                <h:commandLink action="#{categoriesController.prepareList}" value="#{bundle.ViewCategoriesShowAllLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ViewCategoriesIndexLink}"/>
+    <ui:composition>
 
+        <p:dialog id="CategoriesViewDlg" widgetVar="CategoriesViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewCategoriesTitle}">
+            <h:form id="CategoriesViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{categoriesController.selected != null}">
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_idCategories}"/>
+                        <h:outputText value="#{categoriesController.selected.idCategories}" title="#{bundle.ViewCategoriesTitle_idCategories}"/>
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_nomCategorie}"/>
+                        <h:outputText value="#{categoriesController.selected.nomCategorie}" title="#{bundle.ViewCategoriesTitle_nomCategorie}"/>
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_valeur}"/>
+                        <h:outputText value="#{categoriesController.selected.valeur}" title="#{bundle.ViewCategoriesTitle_valeur}"/>
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_pourProfil}"/>
+                        <h:outputText value="#{categoriesController.selected.pourProfil}" title="#{bundle.ViewCategoriesTitle_pourProfil}"/>
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_categorieParente}"/>
+                        <h:outputText value="#{categoriesController.selected.categorieParente}" title="#{bundle.ViewCategoriesTitle_categorieParente}"/>
+                        <h:outputText value="#{bundle.ViewCategoriesLabel_semantique}"/>
+                        <h:outputText value="#{categoriesController.selected.semantique}" title="#{bundle.ViewCategoriesTitle_semantique}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="CategoriesViewDialog.hide()"/>
+                </h:panelGroup>
             </h:form>
-        </ui:define>
-    </ui:composition>
+        </p:dialog>
 
+    </ui:composition>
 </html>

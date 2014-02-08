@@ -3,83 +3,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
+
+
         <ui:define name="title">
             <h:outputText value="#{bundle.ListCategoriesTitle}"></h:outputText>
         </ui:define>
+
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListCategoriesEmpty}" rendered="#{categoriesController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{categoriesController.items.rowCount > 0}">
-                    <h:outputText value="#{categoriesController.pagination.pageFirstItem + 1}..#{categoriesController.pagination.pageLastItem + 1}/#{categoriesController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{categoriesController.previous}" value="#{bundle.Previous} #{categoriesController.pagination.pageSize}" rendered="#{categoriesController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{categoriesController.next}" value="#{bundle.Next} #{categoriesController.pagination.pageSize}" rendered="#{categoriesController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{categoriesController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
+            <h:form id="CategoriesListForm">
+                <p:panel header="#{bundle.ListCategoriesTitle}">
+                    <p:dataTable id="datalist" value="#{categoriesController.items}" var="item"
+                                 selectionMode="single" selection="#{categoriesController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.idCategories}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_idCategories}"/>
                             </f:facet>
                             <h:outputText value="#{item.idCategories}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_nomCategorie}"/>
                             </f:facet>
                             <h:outputText value="#{item.nomCategorie}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_valeur}"/>
                             </f:facet>
                             <h:outputText value="#{item.valeur}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCategoriesTitle_description}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.description}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_pourProfil}"/>
                             </f:facet>
                             <h:outputText value="#{item.pourProfil}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_categorieParente}"/>
                             </f:facet>
                             <h:outputText value="#{item.categorieParente}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListCategoriesTitle_semantique}"/>
                             </f:facet>
                             <h:outputText value="#{item.semantique}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{categoriesController.prepareView}" value="#{bundle.ListCategoriesViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{categoriesController.prepareEdit}" value="#{bundle.ListCategoriesEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{categoriesController.destroy}" value="#{bundle.ListCategoriesDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{categoriesController.prepareCreate}" value="#{bundle.ListCategoriesCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListCategoriesIndexLink}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{categoriesController.prepareCreate}" update=":CategoriesCreateForm" oncomplete="PF('CategoriesCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CategoriesViewForm" oncomplete="PF('CategoriesViewDialog').show()" disabled="#{empty categoriesController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CategoriesEditForm" oncomplete="PF('CategoriesEditDialog').show()" disabled="#{empty categoriesController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{categoriesController.destroy}" update=":growl,datalist" disabled="#{empty categoriesController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
             </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
         </ui:define>
     </ui:composition>
 

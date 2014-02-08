@@ -1,4 +1,4 @@
-package net.cofares.entity.entity.util;
+package net.cofares.control.util;
 
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -21,6 +21,10 @@ public class JsfUtil {
             items[i++] = new SelectItem(x, x.toString());
         }
         return items;
+    }
+
+    public static boolean isValidationFailed() {
+        return FacesContext.getCurrentInstance().isValidationFailed();
     }
 
     public static void addErrorMessage(Exception ex, String defaultMsg) {
@@ -57,4 +61,10 @@ public class JsfUtil {
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
 
+    public static enum PersistAction {
+
+        CREATE,
+        DELETE,
+        UPDATE
+    }
 }

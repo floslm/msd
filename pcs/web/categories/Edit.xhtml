@@ -3,50 +3,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.EditCategoriesTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_idCategories}" for="idCategories" />
-                    <h:inputText id="idCategories" value="#{categoriesController.selected.idCategories}" title="#{bundle.EditCategoriesTitle_idCategories}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_idCategories}"/>
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_nomCategorie}" for="nomCategorie" />
-                    <h:inputText id="nomCategorie" value="#{categoriesController.selected.nomCategorie}" title="#{bundle.EditCategoriesTitle_nomCategorie}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_nomCategorie}"/>
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_valeur}" for="valeur" />
-                    <h:inputText id="valeur" value="#{categoriesController.selected.valeur}" title="#{bundle.EditCategoriesTitle_valeur}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_valeur}"/>
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_description}" for="description" />
-                    <h:inputTextarea rows="4" cols="30" id="description" value="#{categoriesController.selected.description}" title="#{bundle.EditCategoriesTitle_description}" />
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_pourProfil}" for="pourProfil" />
-                    <h:selectOneMenu id="pourProfil" value="#{categoriesController.selected.pourProfil}" title="#{bundle.EditCategoriesTitle_pourProfil}" >
-                        <f:selectItems value="#{profilController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_categorieParente}" for="categorieParente" />
-                    <h:selectOneMenu id="categorieParente" value="#{categoriesController.selected.categorieParente}" title="#{bundle.EditCategoriesTitle_categorieParente}" >
-                        <f:selectItems value="#{categoriesController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundle.EditCategoriesLabel_semantique}" for="semantique" />
-                    <h:selectOneMenu id="semantique" value="#{categoriesController.selected.semantique}" title="#{bundle.EditCategoriesTitle_semantique}" >
-                        <f:selectItems value="#{semantiqueController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandLink action="#{categoriesController.update}" value="#{bundle.EditCategoriesSaveLink}"/>
-                <br />
-                <br />
-                <h:link outcome="View" value="#{bundle.EditCategoriesViewLink}"/>
-                <br />
-                <h:commandLink action="#{categoriesController.prepareList}" value="#{bundle.EditCategoriesShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.EditCategoriesIndexLink}" />
+    <ui:composition>
+
+        <p:dialog id="CategoriesEditDlg" widgetVar="CategoriesEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditCategoriesTitle}">
+            <h:form id="CategoriesEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{categoriesController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_idCategories}" for="idCategories" />
+                        <p:inputText id="idCategories" value="#{categoriesController.selected.idCategories}" title="#{bundle.EditCategoriesTitle_idCategories}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_idCategories}"/>
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_nomCategorie}" for="nomCategorie" />
+                        <p:inputText id="nomCategorie" value="#{categoriesController.selected.nomCategorie}" title="#{bundle.EditCategoriesTitle_nomCategorie}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_nomCategorie}"/>
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_valeur}" for="valeur" />
+                        <p:inputText id="valeur" value="#{categoriesController.selected.valeur}" title="#{bundle.EditCategoriesTitle_valeur}" required="true" requiredMessage="#{bundle.EditCategoriesRequiredMessage_valeur}"/>
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_pourProfil}" for="pourProfil" />
+                        <p:selectOneMenu id="pourProfil" value="#{categoriesController.selected.pourProfil}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{profilController.itemsAvailableSelectOne}"
+                                           var="pourProfilItem"
+                                           itemValue="#{pourProfilItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_categorieParente}" for="categorieParente" />
+                        <p:selectOneMenu id="categorieParente" value="#{categoriesController.selected.categorieParente}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{categoriesController.itemsAvailableSelectOne}"
+                                           var="categorieParenteItem"
+                                           itemValue="#{categorieParenteItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCategoriesLabel_semantique}" for="semantique" />
+                        <p:selectOneMenu id="semantique" value="#{categoriesController.selected.semantique}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{semantiqueController.itemsAvailableSelectOne}"
+                                           var="semantiqueItem"
+                                           itemValue="#{semantiqueItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{categoriesController.update}" value="#{bundle.Save}" update="display,:CategoriesListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CategoriesEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CategoriesEditDialog.hide()"/>
+                </h:panelGroup>
             </h:form>
-        </ui:define>
-    </ui:composition>
+        </p:dialog>
 
+    </ui:composition>
 </html>

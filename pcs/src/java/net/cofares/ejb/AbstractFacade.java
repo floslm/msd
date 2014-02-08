@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity.sb;
+package net.cofares.ejb;
 
 import java.util.List;
 import javax.persistence.EntityManager;

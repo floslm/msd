@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity;
+package net.cofares;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,8 +44,8 @@ public class Semantique implements Serializable {
     @Size(max = 65535)
     @Column(name = "description", length = 65535)
     private String description;
-    @OneToMany(mappedBy = "semantique", fetch = FetchType.LAZY)
-    private List<Categories> categoriesList;
+    @OneToMany(mappedBy = "semantique")
+    private Collection<Categories> categoriesCollection;
 
     public Semantique() {
     }
@@ -72,12 +71,12 @@ public class Semantique implements Serializable {
     }
 
     @XmlTransient
-    public List<Categories> getCategoriesList() {
-        return categoriesList;
+    public Collection<Categories> getCategoriesCollection() {
+        return categoriesCollection;
     }
 
-    public void setCategoriesList(List<Categories> categoriesList) {
-        this.categoriesList = categoriesList;
+    public void setCategoriesCollection(Collection<Categories> categoriesCollection) {
+        this.categoriesCollection = categoriesCollection;
     }
 
     @Override
@@ -102,7 +101,7 @@ public class Semantique implements Serializable {
 
     @Override
     public String toString() {
-        return "[idSemantique=" + idSemantique + "]";
+        return "net.cofares.Semantique[ idSemantique=" + idSemantique + " ]";
     }
     
 }

@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity.sb;
+package net.cofares.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import net.cofares.entity.Categories;
+import net.cofares.Categories;
 
 /**
  *

@@ -3,35 +3,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.CreateProfilTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateProfilLabel_idProfil}" for="idProfil" />
-                    <h:inputText id="idProfil" value="#{profilController.selected.idProfil}" title="#{bundle.CreateProfilTitle_idProfil}" required="true" requiredMessage="#{bundle.CreateProfilRequiredMessage_idProfil}"/>
-                    <h:outputLabel value="#{bundle.CreateProfilLabel_description}" for="description" />
-                    <h:inputText id="description" value="#{profilController.selected.description}" title="#{bundle.CreateProfilTitle_description}" />
-                    <h:outputLabel value="#{bundle.CreateProfilLabel_typeProfil}" for="typeProfil" />
-                    <h:inputText id="typeProfil" value="#{profilController.selected.typeProfil}" title="#{bundle.CreateProfilTitle_typeProfil}" required="true" requiredMessage="#{bundle.CreateProfilRequiredMessage_typeProfil}"/>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{profilController.create}" value="#{bundle.CreateProfilSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{profilController.prepareList}" value="#{bundle.CreateProfilShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateProfilIndexLink}"/>
+    <ui:composition>
+
+        <p:dialog id="ProfilCreateDlg" widgetVar="ProfilCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProfilTitle}">
+            <h:form id="ProfilCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{profilController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProfilLabel_idProfil}" for="idProfil" />
+                        <p:inputText id="idProfil" value="#{profilController.selected.idProfil}" title="#{bundle.CreateProfilTitle_idProfil}" required="true" requiredMessage="#{bundle.CreateProfilRequiredMessage_idProfil}"/>
+                        <p:outputLabel value="#{bundle.CreateProfilLabel_description}" for="description" />
+                        <p:inputText id="description" value="#{profilController.selected.description}" title="#{bundle.CreateProfilTitle_description}" />
+                        <p:outputLabel value="#{bundle.CreateProfilLabel_typeProfil}" for="typeProfil" />
+                        <p:inputText id="typeProfil" value="#{profilController.selected.typeProfil}" title="#{bundle.CreateProfilTitle_typeProfil}" required="true" requiredMessage="#{bundle.CreateProfilRequiredMessage_typeProfil}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{profilController.create}" value="#{bundle.Save}" update="display,:ProfilListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProfilCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProfilCreateDialog.hide()"/>
+                </h:panelGroup>
             </h:form>
-        </ui:define>
-    </ui:composition>
+        </p:dialog>
 
+    </ui:composition>
 </html>

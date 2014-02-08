@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity;
+package net.cofares;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,8 +49,8 @@ public class Profil implements Serializable {
     @NotNull
     @Column(name = "typeProfil", nullable = false)
     private Character typeProfil;
-    @OneToMany(mappedBy = "pourProfil", fetch = FetchType.LAZY)
-    private List<Categories> categoriesList;
+    @OneToMany(mappedBy = "pourProfil")
+    private Collection<Categories> categoriesCollection;
 
     public Profil() {
     }
@@ -90,12 +89,12 @@ public class Profil implements Serializable {
     }
 
     @XmlTransient
-    public List<Categories> getCategoriesList() {
-        return categoriesList;
+    public Collection<Categories> getCategoriesCollection() {
+        return categoriesCollection;
     }
 
-    public void setCategoriesList(List<Categories> categoriesList) {
-        this.categoriesList = categoriesList;
+    public void setCategoriesCollection(Collection<Categories> categoriesCollection) {
+        this.categoriesCollection = categoriesCollection;
     }
 
     @Override
@@ -120,7 +119,7 @@ public class Profil implements Serializable {
 
     @Override
     public String toString() {
-        return "net.cofares.entity.Profil[ idProfil=" + idProfil + " ]";
+        return "net.cofares.Profil[ idProfil=" + idProfil + " ]";
     }
     
 }

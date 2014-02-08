@@ -4,19 +4,17 @@
  * and open the template in the editor.
  */
 
-package net.cofares.entity;
+package net.cofares;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,20 +55,17 @@ public class Categories implements Serializable {
     @NotNull
     @Column(name = "valeur", nullable = false)
     private int valeur;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "description", length = 65535)
-    private String description;
+    
     @JoinColumn(name = "pourProfil", referencedColumnName = "idProfil")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Profil pourProfil;
-    @OneToMany(mappedBy = "categorieParente", fetch = FetchType.LAZY)
-    private List<Categories> categoriesList;
+    @OneToMany(mappedBy = "categorieParente")
+    private Collection<Categories> categoriesCollection;
     @JoinColumn(name = "categorieParente", referencedColumnName = "idCategories")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Categories categorieParente;
     @JoinColumn(name = "semantique", referencedColumnName = "idSemantique")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Semantique semantique;
 
     public Categories() {
@@ -110,14 +105,7 @@ public class Categories implements Serializable {
         this.valeur = valeur;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    
     public Profil getPourProfil() {
         return pourProfil;
     }
@@ -127,12 +115,12 @@ public class Categories implements Serializable {
     }
 
     @XmlTransient
-    public List<Categories> getCategoriesList() {
-        return categoriesList;
+    public Collection<Categories> getCategoriesCollection() {
+        return categoriesCollection;
     }
 
-    public void setCategoriesList(List<Categories> categoriesList) {
-        this.categoriesList = categoriesList;
+    public void setCategoriesCollection(Collection<Categories> categoriesCollection) {
+        this.categoriesCollection = categoriesCollection;
     }
 
     public Categories getCategorieParente() {
@@ -173,7 +161,7 @@ public class Categories implements Serializable {
 
     @Override
     public String toString() {
-        return "net.cofares.entity.Categories[ idCategories=" + idCategories + " ]";
+        return "net.cofares.Categories[ idCategories=" + idCategories + " ]";
     }
     
 }

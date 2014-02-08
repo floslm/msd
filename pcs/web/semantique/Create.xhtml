@@ -3,33 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.CreateSemantiqueTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateSemantiqueLabel_idSemantique}" for="idSemantique" />
-                    <h:inputText id="idSemantique" value="#{semantiqueController.selected.idSemantique}" title="#{bundle.CreateSemantiqueTitle_idSemantique}" required="true" requiredMessage="#{bundle.CreateSemantiqueRequiredMessage_idSemantique}"/>
-                    <h:outputLabel value="#{bundle.CreateSemantiqueLabel_description}" for="description" />
-                    <h:inputTextarea rows="4" cols="30" id="description" value="#{semantiqueController.selected.description}" title="#{bundle.CreateSemantiqueTitle_description}" />
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{semantiqueController.create}" value="#{bundle.CreateSemantiqueSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{semantiqueController.prepareList}" value="#{bundle.CreateSemantiqueShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateSemantiqueIndexLink}"/>
+    <ui:composition>
+
+        <p:dialog id="SemantiqueCreateDlg" widgetVar="SemantiqueCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSemantiqueTitle}">
+            <h:form id="SemantiqueCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{semantiqueController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateSemantiqueLabel_idSemantique}" for="idSemantique" />
+                        <p:inputText id="idSemantique" value="#{semantiqueController.selected.idSemantique}" title="#{bundle.CreateSemantiqueTitle_idSemantique}" required="true" requiredMessage="#{bundle.CreateSemantiqueRequiredMessage_idSemantique}"/>
+                        <p:outputLabel value="#{bundle.CreateSemantiqueLabel_description}" for="description" />
+                        <p:inputTextarea rows="4" cols="30" id="description" value="#{semantiqueController.selected.description}" title="#{bundle.CreateSemantiqueTitle_description}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{semantiqueController.create}" value="#{bundle.Save}" update="display,:SemantiqueListForm:datalist,:growl" oncomplete="handleSubmit(args,'SemantiqueCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SemantiqueCreateDialog.hide()"/>
+                </h:panelGroup>
             </h:form>
-        </ui:define>
-    </ui:composition>
+        </p:dialog>
 
+    </ui:composition>
 </html>
