@@ -8,7 +8,6 @@
 
     <ui:composition template="/template.xhtml">
 
-
         <ui:define name="title">
             <h:outputText value="#{bundle.ListProfilTitle}"></h:outputText>
         </ui:define>
@@ -16,6 +15,7 @@
         <ui:define name="body">
             <h:form id="ProfilListForm">
                 <p:panel header="#{bundle.ListProfilTitle}">
+
                     <p:tree id="datalist" value="#{profilController.treeItems}" var="item"
                             selectionMode="single" selection="#{profilController.treeSelected}"
 
@@ -25,9 +25,10 @@
 
                         <p:treeNode type="Profil" expandedIcon="ui-icon-folder-open"  
                                     collapsedIcon="ui-icon-folder-collapsed">  
-                             #{item}
+                            #{item}
                         </p:treeNode>  
-                        <p:treeNode type="Categorie" icon="ui-icon-document">  
+                        <p:treeNode type="Categorie" expandedIcon="ui-icon-plus"
+                                    collapsedIcon="ui-icon-document">  
                             #{item}
                         </p:treeNode>
 
@@ -40,7 +41,6 @@
 
                 </p:panel>
             </h:form>
-
 
 
             <ui:include src="Create.xhtml"/>

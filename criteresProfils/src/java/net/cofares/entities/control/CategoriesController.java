@@ -95,12 +95,12 @@ public class CategoriesController implements Serializable {
     public Categories prepareCreate() {
         Categories prep = new Categories();
 
-        //prep.setPourProfil(profilController.getProfil(idProfil));
+        //if (profilController.getSelected() != null) prep.setPourProfil(profilController.getSelected());
         //prep.setIdCategories(selected.getIdCategories() * 10);
-        //prep.setCategorieParente(selected);
+        //if (this.selected != null) prep.setCategorieParente(this.selected);
         initializeEmbeddableKey();
-        selected = prep;
-        return selected;
+        this.selected = prep;
+        return this.selected;
     }
 
     public void create() {
