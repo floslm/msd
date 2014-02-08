@@ -118,7 +118,7 @@ public class Profil implements Serializable {
 
     @Override
     public String toString() {
-        return "net.cofares.Profil[ idProfil=" + idProfil + " ]";
+        return "[Profil:" + idProfil + ":" + description + "]";
     }
     
 }

@@ -163,7 +163,7 @@ public class Categories implements Serializable {
 
     @Override
     public String toString() {
-        return "net.cofares.Categories[ idCategories=" + idCategories + " ]";
+        return "Categorie: " +  nomCategorie + "(" + valeur + ")";
     }
     
 }
