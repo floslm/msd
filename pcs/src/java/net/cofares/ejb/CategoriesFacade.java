@@ -6,10 +6,13 @@
 
 package net.cofares.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import net.cofares.Categories;
+import net.cofares.Profil;
 
 /**
  *
@@ -28,5 +31,28 @@ public class CategoriesFacade extends AbstractFacade<Categories> {
     public CategoriesFacade() {
         super(Categories.class);
     }
+    public List<Categories> findHeadCategories() {
+        TypedQuery<Categories> query
+                = em.createNamedQuery("Categories.findHeadCategories", Categories.class);
+        List<Categories> results = query.getResultList();
+        return results;
+    }
+    
+    public List<Categories> findSubCategories(Categories id) {
+        TypedQuery<Categories> query
+                = em.createNamedQuery("Categories.findSubCategories", Categories.class);
+        query.setParameter("idCategories", id);
+        List<Categories> results = query.getResultList();
+        return results;
+    }
+    
+    public List<Categories> findProfilHeadCategories(Profil id) {
+        TypedQuery<Categories> query
+                = em.createNamedQuery("Categories.findProfilHeadCategories", Categories.class);
+        query.setParameter("profil", id);
+        List<Categories> results = query.getResultList();
+        return results;
+    }
+
     
 }

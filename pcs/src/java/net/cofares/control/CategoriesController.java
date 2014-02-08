@@ -1,10 +1,5 @@
 package net.cofares.control;
 
-import net.cofares.Categories;
-import net.cofares.control.util.JsfUtil;
-import net.cofares.control.util.JsfUtil.PersistAction;
-import net.cofares.ejb.CategoriesFacade;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,12 +7,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import javax.inject.Named;
+import net.cofares.Categories;
+import net.cofares.Profil;
+import net.cofares.control.util.JsfUtil;
+import net.cofares.control.util.JsfUtil.PersistAction;
+import net.cofares.ejb.CategoriesFacade;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 @Named("categoriesController")
 @SessionScoped
@@ -27,6 +30,12 @@ public class CategoriesController implements Serializable {
     private net.cofares.ejb.CategoriesFacade ejbFacade;
     private List<Categories> items = null;
     private Categories selected;
+    private Integer idProfil;
+    private TreeNode treeSelected;
+    TreeNode treeItems = null;
+
+    @Inject
+    ProfilController profilController;
 
     public CategoriesController() {
     }
@@ -119,6 +128,71 @@ public class CategoriesController implements Serializable {
 
     public List<Categories> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+
+    //GENERER APRES manuellement
+    //======================
+    /**
+     * @return the idProfil
+     */
+    public Integer getIdProfil() {
+        return idProfil;
+    }
+
+    /**
+     * @param idProfil the idProfil to set
+     */
+    public void setIdProfil(Integer idProfil) {
+        this.idProfil = idProfil;
+        if (idProfil == null) {
+            profilController.setSelected(null);
+        } else {
+            profilController.setSelected(profilController.getProfil(idProfil));
+        }
+    }
+
+    /**
+     * @return the treeSelected
+     */
+    public TreeNode getTreeSelected() {
+        return treeSelected;
+    }
+
+    public List<Categories> getHeadItems() {
+        return getFacade().findHeadCategories();
+    }
+
+    public List<Categories> headCategories(Profil p) {
+        if (p == null) {
+            return getFacade().findHeadCategories();
+        } else {
+            return getFacade().findProfilHeadCategories(p);
+        }
+    }
+
+    public void _subItems(List<Categories> subCategories, TreeNode parent) {
+
+        for (Categories c : subCategories) {
+            TreeNode current = new DefaultTreeNode("Categorie", c, parent);
+            //_subItems(c.getCategoriesList(),current);
+            _subItems(ejbFacade.findSubCategories(c), current);
+        }
+
+    }
+
+    public TreeNode getTreeItems() {
+        List<Categories> lcRacine = headCategories(profilController.getSelected());
+        treeItems = new DefaultTreeNode("root", null);
+        _subItems(lcRacine, treeItems);
+        return treeItems;
+    }
+
+    /**
+     * @param treeSelected the treeSelected to set
+     */
+    public void setTreeSelected(TreeNode treeSelected) {
+        this.treeSelected = treeSelected;
+        this.selected = (Categories) treeSelected.getData();
     }
 
     @FacesConverter(forClass = Categories.class)
