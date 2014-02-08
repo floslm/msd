@@ -37,7 +37,6 @@ public class Semantique implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "idSemantique", nullable = false)
     private Integer idSemantique;
     @Lob

@@ -12,8 +12,6 @@
             <h:form id="ProfilCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{profilController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateProfilLabel_idProfil}" for="idProfil" />
-                        <p:inputText id="idProfil" value="#{profilController.selected.idProfil}" title="#{bundle.CreateProfilTitle_idProfil}" required="true" requiredMessage="#{bundle.CreateProfilRequiredMessage_idProfil}"/>
                         <p:outputLabel value="#{bundle.CreateProfilLabel_description}" for="description" />
                         <p:inputText id="description" value="#{profilController.selected.description}" title="#{bundle.CreateProfilTitle_description}" />
                         <p:outputLabel value="#{bundle.CreateProfilLabel_typeProfil}" for="typeProfil" />

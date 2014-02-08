@@ -12,8 +12,6 @@
             <h:form id="SemantiqueCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{semantiqueController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateSemantiqueLabel_idSemantique}" for="idSemantique" />
-                        <p:inputText id="idSemantique" value="#{semantiqueController.selected.idSemantique}" title="#{bundle.CreateSemantiqueTitle_idSemantique}" required="true" requiredMessage="#{bundle.CreateSemantiqueRequiredMessage_idSemantique}"/>
                         <p:outputLabel value="#{bundle.CreateSemantiqueLabel_description}" for="description" />
                         <p:inputTextarea rows="4" cols="30" id="description" value="#{semantiqueController.selected.description}" title="#{bundle.CreateSemantiqueTitle_description}" />
                     </p:panelGrid>

@@ -43,7 +43,6 @@ public class Categories implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "idCategories", nullable = false)
     private Integer idCategories;
     @Basic(optional = false)
