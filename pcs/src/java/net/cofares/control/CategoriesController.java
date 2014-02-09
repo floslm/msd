@@ -96,32 +96,45 @@ public class CategoriesController implements Serializable {
         return duplicate;
     }
     //TODO dupliquer toute la hierarchier parente 
-    public void doDuplicate() {
-        create(new Categories(selected));
-        
-        /**
-        if (selected.getCategorieParente() != null) {
-            selected = selected.getCategorieParente();
-            doDuplicate();
-            
+
+    public Categories doDuplicate(Categories leaf) {
+        Categories categ = new Categories(leaf);
+        create(categ);
+        if (null != leaf.getCategorieParente()) {
+            categ.setCategorieParente(doDuplicate(leaf.getCategorieParente()));
+            persist(categ, PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesUpdated"));           
         }
-        */
+        return categ;
+
     }
+
+    public void doDuplicate() {
+        //create(new Categories(selected));
+        doDuplicate(selected);
+        /**
+         * if (selected.getCategorieParente() != null) { selected =
+         * selected.getCategorieParente(); doDuplicate();
+         *
+         * }
+         */
+    }
+
     public Categories prepareCreate() {
         selected = new Categories();
         initializeEmbeddableKey();
         return selected;
     }
 
-    public void create(Categories categ){
-         
+    public void create(Categories categ) {
+
         persist(categ, PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
+
     public void create() {
-        
+
         persist(selected, PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -154,7 +167,7 @@ public class CategoriesController implements Serializable {
                 if (persistAction == PersistAction.CREATE) {
                     getFacade().create(categ);
                     JsfUtil.addSuccessMessage(successMessage);
-                }else if (persistAction == PersistAction.UPDATE) {
+                } else if (persistAction == PersistAction.UPDATE) {
                     getFacade().edit(categ);
                     JsfUtil.addSuccessMessage(successMessage);
                 } else if (persistAction == PersistAction.DELETE) {
@@ -163,7 +176,7 @@ public class CategoriesController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage("Erreur dans persistAcgtion");
                 }
-                
+
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
