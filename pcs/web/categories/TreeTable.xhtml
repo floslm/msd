@@ -18,8 +18,8 @@
                     <p:treeTable id="datalist" value="#{categoriesController.treeItems}" var="item"
                                  selectionMode="single" selection="#{categoriesController.treeSelected}"                                 
                                  >
-                        <p:ajax event="select"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="unselect" update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="select"   update="createButton dupButton viewButton editButton deleteButton"/>
+                        <p:ajax event="unselect" update="createButton dupButton viewButton editButton deleteButton"/>
                         <f:facet name="header">
                             <h:selectOneMenu  value="#{profilController.selected}" >
 

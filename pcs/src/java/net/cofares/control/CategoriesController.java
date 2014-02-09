@@ -95,9 +95,17 @@ public class CategoriesController implements Serializable {
         }
         return duplicate;
     }
+    //TODO dupliquer toute la hierarchier parente 
     public void doDuplicate() {
         selected = new Categories(selected);
         create();
+        /**
+        if (selected.getCategorieParente() != null) {
+            selected = selected.getCategorieParente();
+            doDuplicate();
+            
+        }
+        */
     }
     public Categories prepareCreate() {
         selected = new Categories();
