@@ -97,8 +97,8 @@ public class CategoriesController implements Serializable {
     }
     //TODO dupliquer toute la hierarchier parente 
     public void doDuplicate() {
-        selected = new Categories(selected);
-        create();
+        create(new Categories(selected));
+        
         /**
         if (selected.getCategorieParente() != null) {
             selected = selected.getCategorieParente();
@@ -113,20 +113,27 @@ public class CategoriesController implements Serializable {
         return selected;
     }
 
+    public void create(Categories categ){
+         
+        persist(categ, PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
+        if (!JsfUtil.isValidationFailed()) {
+            items = null;    // Invalidate list of items to trigger re-query.
+        }
+    }
     public void create() {
         
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
+        persist(selected, PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesUpdated"));
+        persist(selected, PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesUpdated"));
     }
 
     public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CategoriesDeleted"));
+        persist(selected, PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CategoriesDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
@@ -140,16 +147,23 @@ public class CategoriesController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
+    private void persist(Categories categ, PersistAction persistAction, String successMessage) {
+        if (categ != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                if (persistAction == PersistAction.CREATE) {
+                    getFacade().create(categ);
+                    JsfUtil.addSuccessMessage(successMessage);
+                }else if (persistAction == PersistAction.UPDATE) {
+                    getFacade().edit(categ);
+                    JsfUtil.addSuccessMessage(successMessage);
+                } else if (persistAction == PersistAction.DELETE) {
+                    getFacade().remove(categ);
+                    JsfUtil.addSuccessMessage(successMessage);
                 } else {
-                    getFacade().remove(selected);
+                    JsfUtil.addErrorMessage("Erreur dans persistAcgtion");
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+                
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();

@@ -80,7 +80,7 @@ public class Categories implements Serializable {
         this();
         nomCategorie = todup.nomCategorie;
         valeur=todup.valeur;
-        categorieParente=todup.categorieParente;
+        //categorieParente=todup.categorieParente;
         semantique=todup.semantique;
     }
     public Categories(Integer idCategories, String nomCategorie, int valeur) {
