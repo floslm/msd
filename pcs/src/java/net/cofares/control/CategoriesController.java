@@ -30,12 +30,41 @@ public class CategoriesController implements Serializable {
     private net.cofares.ejb.CategoriesFacade ejbFacade;
     private List<Categories> items = null;
     private Categories selected;
+    private Categories duplicate;
     private Integer idProfil;
     private TreeNode treeSelected;
     TreeNode treeItems = null;
 
     @Inject
-    ProfilController profilController;
+    private ProfilController profilController;
+
+    /**
+     * @return the duplicate
+     */
+    public Categories getDuplicate() {
+        return duplicate;
+    }
+
+    /**
+     * @param duplicate the duplicate to set
+     */
+    public void setDuplicate(Categories duplicate) {
+        this.duplicate = duplicate;
+    }
+
+    /**
+     * @return the profilController
+     */
+    public ProfilController getProfilController() {
+        return profilController;
+    }
+
+    /**
+     * @param profilController the profilController to set
+     */
+    public void setProfilController(ProfilController profilController) {
+        this.profilController = profilController;
+    }
 
     public CategoriesController() {
     }
@@ -58,6 +87,18 @@ public class CategoriesController implements Serializable {
         return ejbFacade;
     }
 
+    public Categories prepareDuplicate() {
+        setDuplicate(new Categories());
+        if (selected != null) {
+            duplicate.setCategorieParente(selected);
+            duplicate.setPourProfil(selected.getPourProfil());
+        }
+        return duplicate;
+    }
+    public void doDuplicate() {
+        selected = new Categories(selected);
+        create();
+    }
     public Categories prepareCreate() {
         selected = new Categories();
         initializeEmbeddableKey();
@@ -65,6 +106,7 @@ public class CategoriesController implements Serializable {
     }
 
     public void create() {
+        
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CategoriesCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -145,9 +187,9 @@ public class CategoriesController implements Serializable {
     public void setIdProfil(Integer idProfil) {
         this.idProfil = idProfil;
         if (idProfil == null) {
-            profilController.setSelected(null);
+            getProfilController().setSelected(null);
         } else {
-            profilController.setSelected(profilController.getProfil(idProfil));
+            getProfilController().setSelected(getProfilController().getProfil(idProfil));
         }
     }
 
@@ -181,7 +223,7 @@ public class CategoriesController implements Serializable {
     }
 
     public TreeNode getTreeItems() {
-        List<Categories> lcRacine = headCategories(profilController.getSelected());
+        List<Categories> lcRacine = headCategories(getProfilController().getSelected());
         treeItems = new DefaultTreeNode("root", null);
         _subItems(lcRacine, treeItems);
         return treeItems;

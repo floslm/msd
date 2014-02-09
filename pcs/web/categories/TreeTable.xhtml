@@ -18,15 +18,15 @@
                     <p:treeTable id="datalist" value="#{categoriesController.treeItems}" var="item"
                                  selectionMode="single" selection="#{categoriesController.treeSelected}"                                 
                                  >
-                      <p:ajax event="select"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="select"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="unselect" update="createButton viewButton editButton deleteButton"/>
                         <f:facet name="header">
                             <h:selectOneMenu  value="#{profilController.selected}" >
-                       
-                            <f:selectItems  value="#{profilController.itemsAvailableSelectOne}"
-                                            var="x" itemLabel="#{x}" itemValue="#{x}" />
-                             <f:ajax render="datalist" />
-                        </h:selectOneMenu>
+
+                                <f:selectItems  value="#{profilController.itemsAvailableSelectOne}"
+                                                var="x" itemLabel="#{x}" itemValue="#{x}" />
+                                <f:ajax render="datalist" />
+                            </h:selectOneMenu>
                         </f:facet>
                         <p:column style="width:10%">
                             <f:facet name="header">
@@ -58,9 +58,11 @@
                             </f:facet>
                             #{item.pourProfil}
                         </p:column>
-                        
+
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{categoriesController.prepareCreate}" update=":CategoriesCreateForm" oncomplete="PF('CategoriesCreateDialog').show()"/>
+                            <p:commandButton id="dupButton" icon="ui-icon-plus"   value="Dup" actionListener="#{categoriesController.doDuplicate()}" update="datalist,:growl"  disabled="#{empty categoriesController.selected}"/>
+
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CategoriesViewForm" oncomplete="PF('CategoriesViewDialog').show()" disabled="#{empty categoriesController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CategoriesEditForm" oncomplete="PF('CategoriesEditDialog').show()" disabled="#{empty categoriesController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{categoriesController.destroy}" update=":growl,datalist" disabled="#{empty categoriesController.selected}"/>

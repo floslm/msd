@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="CategoriesDupDlg" widgetVar="CategoriesDupDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCategoriesTitle}">
+            <h:form id="CategoriesDupForm">
+                #{categoriesController.duplicate}
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{categoriesController.duplicate != null}">
+                        <p:outputLabel value="#{bundle.CreateCategoriesLabel_nomCategorie}" for="nomCategorie" />
+                        <p:inputText id="nomCategorie" value="#{categoriesController.duplicate.nomCategorie}" title="#{bundle.CreateCategoriesTitle_nomCategorie}" required="true" requiredMessage="#{bundle.CreateCategoriesRequiredMessage_nomCategorie}"/>
+                        <p:outputLabel value="#{bundle.CreateCategoriesLabel_valeur}" for="valeur" />
+                        <p:inputText id="valeur" value="#{categoriesController.duplicate.valeur}" title="#{bundle.CreateCategoriesTitle_valeur}" required="true" requiredMessage="#{bundle.CreateCategoriesRequiredMessage_valeur}"/>
+                        <p:outputLabel value="#{bundle.CreateCategoriesLabel_pourProfil}" for="pourProfil" />
+                        <p:selectOneMenu id="pourProfil" value="#{categoriesController.duplicate.pourProfil}" >
+                            <f:selectItems value="#{profilController.itemsAvailableSelectOne}"
+                                           var="pourProfilItem"
+                                           itemValue="#{pourProfilItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCategoriesLabel_categorieParente}" for="categorieParente" />
+                        <p:selectOneMenu id="categorieParente" value="#{categoriesController.duplicate.categorieParente}" >
+                            <f:selectItems value="#{categoriesController.itemsAvailableSelectOne}"
+                                           var="categorieParenteItem"
+                                           itemValue="#{categorieParenteItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCategoriesLabel_semantique}" for="semantique" />
+                        <p:selectOneMenu id="semantique" value="#{categoriesController.duplicate.semantique}" >
+                            <f:selectItems value="#{semantiqueController.itemsAvailableSelectOne}"
+                                           var="semantiqueItem"
+                                           itemValue="#{semantiqueItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{categoriesController.create()}" value="#{bundle.Save}" update="display,:CategoriesListForm:datalist,:growl" oncomplete="handleSubmit(args,'CategoriesDupDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CategoriesDupDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

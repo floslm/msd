@@ -76,11 +76,18 @@ public class Categories implements Serializable {
     public Categories(Integer idCategories) {
         this.idCategories = idCategories;
     }
-
+    public Categories(Categories todup) {
+        this();
+        nomCategorie = todup.nomCategorie;
+        valeur=todup.valeur;
+        categorieParente=todup.categorieParente;
+        semantique=todup.semantique;
+    }
     public Categories(Integer idCategories, String nomCategorie, int valeur) {
         this.idCategories = idCategories;
         this.nomCategorie = nomCategorie;
         this.valeur = valeur;
+        
     }
 
     public Integer getIdCategories() {
