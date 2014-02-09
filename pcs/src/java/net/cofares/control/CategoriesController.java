@@ -32,11 +32,26 @@ public class CategoriesController implements Serializable {
     private Categories selected;
     private Categories duplicate;
     private Integer idProfil;
+    private Profil profilCopy;
     private TreeNode treeSelected;
     TreeNode treeItems = null;
 
     @Inject
     private ProfilController profilController;
+
+    /**
+     * @return the profilCopy
+     */
+    public Profil getProfilCopy() {
+        return profilCopy;
+    }
+
+    /**
+     * @param profilCopy the profilCopy to set
+     */
+    public void setProfilCopy(Profil profilCopy) {
+        this.profilCopy = profilCopy;
+    }
 
     /**
      * @return the duplicate
@@ -87,18 +102,11 @@ public class CategoriesController implements Serializable {
         return ejbFacade;
     }
 
-    public Categories prepareDuplicate() {
-        setDuplicate(new Categories());
-        if (selected != null) {
-            duplicate.setCategorieParente(selected);
-            duplicate.setPourProfil(selected.getPourProfil());
-        }
-        return duplicate;
-    }
     //TODO dupliquer toute la hierarchier parente 
 
     public Categories doDuplicate(Categories leaf) {
         Categories categ = new Categories(leaf);
+        categ.setPourProfil(profilCopy);
         create(categ);
         if (null != leaf.getCategorieParente()) {
             categ.setCategorieParente(doDuplicate(leaf.getCategorieParente()));
@@ -121,6 +129,7 @@ public class CategoriesController implements Serializable {
 
     public Categories prepareCreate() {
         selected = new Categories();
+        selected.setPourProfil(profilCopy);
         initializeEmbeddableKey();
         return selected;
     }

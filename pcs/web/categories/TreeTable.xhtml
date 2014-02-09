@@ -7,8 +7,6 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
-
-
         <ui:define name="title">
             <h:outputText value="#{bundle.ListCategoriesTitle}"></h:outputText>
         </ui:define>
@@ -21,12 +19,17 @@
                         <p:ajax event="select"   update="createButton dupButton viewButton editButton deleteButton"/>
                         <p:ajax event="unselect" update="createButton dupButton viewButton editButton deleteButton"/>
                         <f:facet name="header">
-                            <h:selectOneMenu  value="#{profilController.selected}" >
-
+                           For view <h:selectOneMenu  value="#{profilController.selected}" >
+                                <f:selectItem itemLabel="Tous" itemValue="#{null}"/>
                                 <f:selectItems  value="#{profilController.itemsAvailableSelectOne}"
                                                 var="x" itemLabel="#{x}" itemValue="#{x}" />
                                 <f:ajax render="datalist" />
                             </h:selectOneMenu>
+                           For copy <h:selectOneMenu  value="#{categoriesController.profilCopy}" >
+                                <f:selectItems  value="#{profilController.itemsAvailableSelectOne}"
+                                                var="x" itemLabel="#{x}" itemValue="#{x}" />
+                               <f:ajax render="datalist" />
+                           </h:selectOneMenu> #{categoriesController.profilCopy}
                         </f:facet>
                         <p:column style="width:10%">
                             <f:facet name="header">
